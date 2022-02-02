@@ -43,6 +43,10 @@ return require('packer').startup(function(use)
     end
   })
 
+  -- Friendly Snippets 
+  -- https://github.com/rafamadriz/friendly-snippets
+  use "rafamadriz/friendly-snippets"
+
   -- Treesitter
   -- https://github.com/nvim-treesitter/nvim-treesitter
   use({
@@ -94,15 +98,31 @@ return require('packer').startup(function(use)
   use 'williamboman/nvim-lsp-installer'
 
   -- Completions
+  -- TODO: Lots of Setup Needed
   use 'hrsh7th/cmp-nvim-lsp'
   use 'hrsh7th/cmp-buffer'
   use 'hrsh7th/cmp-path'
-  use 'hrsh7th/cmp-cmdline'
+  -- use 'hrsh7th/cmp-cmdline'
   use 'hrsh7th/nvim-cmp'
 
   -- Snippets
   use 'L3MON4D3/LuaSnip'
   use 'saadparwaiz1/cmp_luasnip'
+
+  -- Wilder Menu
+  use 'gelguy/wilder.nvim'
+  use 'nixprime/cpsm'
+
+  -- Dashboard
+  -- https://github.com/glepnir/dashboard-nvim
+  use 'glepnir/dashboard-nvim'
+  vim.g.dashboard_default_executive = 'telescope'
+
+  -- Telescope
+  use {
+    'nvim-telescope/telescope.nvim',
+    requires = { {'nvim-lua/plenary.nvim'} }
+  }
 
   -- Devicons
   -- https://github.com/kyazdani42/nvim-web-devicons
@@ -121,6 +141,7 @@ return require('packer').startup(function(use)
   -- TODO: Need To Do A lot of Setup
   -- TODO: Has Tabline Feature
   -- TODO: Set Theme
+  -- TODO: Floating Status Line
   use 'windwp/windline.nvim'
   require('wlsample.airline')
   -- require('wlsample.airline_anim')

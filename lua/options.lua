@@ -4,8 +4,8 @@ vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
 vim.opt.foldenable = false
 
 -- Column Width
-vim.opt.colorcolumn = '80'
-vim.opt.columns = 83
+-- vim.opt.colorcolumn = '80'
+-- vim.opt.columns = 83
 
 -- Wrapping
 -- TODO: Werid Dark Line Before Break Char
