@@ -35,3 +35,5 @@ vim.opt.completeopt = 'menu,menuone,noselect'
 
 -- Set 24bit Colors
 vim.opt.termguicolors = true
+
+-- Setup through lines
