@@ -36,4 +36,8 @@ vim.opt.completeopt = 'menu,menuone,noselect'
 -- Set 24bit Colors
 vim.opt.termguicolors = true
 
--- Setup through lines
+-- Don't Show -- INSERT -- et al.
+vim.opt.showmode = false
+
+-- Highlight Cursor Line
+vim.opt.cursorline = true

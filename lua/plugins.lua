@@ -34,29 +34,11 @@ return require('packer').startup(function(use)
 
   -- Twilight - Dims Code outside Block
   -- https://github.com/folke/twilight.nvim
-  use {
-    "folke/twilight.nvim",
-    config = function()
-      require("twilight").setup {
-        -- your configuration comes here
-        -- or leave it empty to use the default settings
-        -- refer to the configuration section below
-      }
-    end
-  }
+  use 'folke/twilight.nvim'
 
   -- Zen mode
   -- https://github.com/folke/zen-mode.nvim
-  use {
-    "folke/zen-mode.nvim",
-    config = function()
-      require("zen-mode").setup {
-        -- your configuration comes here
-        -- or leave it empty to use the default settings
-        -- refer to the configuration section below
-      }
-    end
-  }
+  use 'folke/zen-mode.nvim'
 
 
   -- TODO Highlights
@@ -86,6 +68,7 @@ return require('packer').startup(function(use)
     end
   }
   vim.g.mapleader = ' '
+
   -- LSP Installer
   -- https://github.com/williamboman/nvim-lsp-installer
   use 'neovim/nvim-lspconfig'
@@ -160,7 +143,6 @@ return require('packer').startup(function(use)
   vim.api.nvim_set_keymap("n", "gR", "<cmd>Trouble lsp_references<cr>",
     {silent = true, noremap = true}
   )
-
 
   -- LSP Diagnostics - Gutter Informaiton
   -- https://github.com/glepnir/lspsaga.nvim
