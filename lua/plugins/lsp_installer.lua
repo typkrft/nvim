@@ -6,15 +6,14 @@ local servers = {
     "yamlls",
     "sqls",
     "solargraph",
-    "zk",
     "sumneko_lua",
     "jsonls",
     "html",
-    "eslint",
     "dockerls",
-    "denols",
     "cssls",
     "bashls",
+--    "zk",
+--    "eslint",
 --    "tsserver",
 }
 

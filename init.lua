@@ -1,14 +1,15 @@
 require('options')
 require('plugins')
 require('autocommands')
-require('keymaps')
 require('plugins/lsp_installer') -- Needs To be sourced Prior to lsp_config
 require('plugins/lsp_config')
 require('plugins/cmp')
 require('plugins/luasnip')
 require('plugins/treesitter')
 require('plugins/autopairs')
+require('plugins/telescope')
 require('plugins/gitsigns')
 require('plugins/themer')
 require('plugins/wilder')
 require('plugins/rainbow')
+require('keymaps') -- Map Last so that everything Is mapped the way I expect it to be

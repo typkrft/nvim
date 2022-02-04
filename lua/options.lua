@@ -12,7 +12,9 @@ vim.opt.foldenable = false
 vim.opt.breakindent = true
 vim.opt.breakindentopt = 'shift:2,min:40,sbr'
 vim.opt.linebreak = true
-vim.opt.showbreak = '    ⮑  '
+vim.opt.showbreak = '  ⮑  '
+-- Move left/right to next/prev line
+vim.opt.whichwrap = vim.opt.whichwrap + '<,>,[,]'
 
 -- Line Numbers
 vim.opt.relativenumber = true
@@ -41,3 +43,25 @@ vim.opt.showmode = false
 
 -- Highlight Cursor Line
 vim.opt.cursorline = true
+
+-- Keep x lines at the top/bottom when scrolling
+vim.opt.scrolloff = 10
+
+-- Persistent Undo
+vim.opt.undofile = true
+
+-- Number Column Width
+vim.opt.numberwidth = 2
+
+-- Faster Completions
+vim.opt.updatetime = 300
+
+-- Split to the right or below
+-- vim.opt.splitright = true Seems to mess with Packer Overlay being in center
+vim.opt.splitbelow = true
+
+-- Turn on Smart Case
+vim.opt.smartcase = true
+
+-- Ignore Case in Search
+vim.opt.ignorecase = true
