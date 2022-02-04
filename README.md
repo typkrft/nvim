@@ -1,4 +1,3 @@
-move packer plugin compiled folder elsewhere
 There are some issues with cmp/wilder in the cmdline in a '/' search a letter needs to be typed first. I've remapped up and down to work with wilder a bit better, a <CR> is mapped to a function that then presses return again, it's wierd not sure if it will cause problems down the line. Tab/S-tab are now used to move through history. Not sure how to make this a better situation. Maybe there is a hisotry plugin or telescope
 
 # Nvim
@@ -18,6 +17,7 @@ There are some issues with cmp/wilder in the cmdline in a '/' search a letter ne
 - [ ] Date Completion and other snippets
 - [ ] Chain together plugins that need eachother with packer
 - [ ] Theme everything Especially cokeline
+- [ ] move packer plugin compiled folder elsewhere
 
 # Firefox
 - [ ] Change Container Tab Colors
