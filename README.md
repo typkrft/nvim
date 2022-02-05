@@ -21,6 +21,13 @@ There are some issues with cmp/wilder in the cmdline in a '/' search a letter ne
 - [ ] Revert Wilder tab mappings 
 - [ ] add comment mappigns
 - [ ] add kitty / nvim mac keys
+- [ ] multiline comment not working
+- [ ] https://github.com/kabinspace/AstroVim/blob/main/lua/configs/cmp.lua lots of great configs in particular pretty dialog boxes
+
+# .zshrc
+- [ ] Map macOS keybindings with kitty use in linux configs as well
+
+# repos 
 
 # Firefox
 - [ ] Change Container Tab Colors
