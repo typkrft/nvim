@@ -49,3 +49,21 @@ On_attach = function(client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 end
 
+-- Surround / Select Text Ojb
+--vim.api.nvim_set_keymap("nmap", '<space>i', [[ysiW"]], {silent = false, noremap = true})
+vim.cmd([[nmap <space>" ysiW"]])
+vim.cmd([[nmap <space>{ ysiW{]])
+vim.cmd([[nmap <space>( ysiW(]])
+vim.cmd([[nmap <space>' ysiW']])
+vim.cmd([[nmap <space>[ ysiW[]])
+-- Remove Surround Delim
+vim.cmd([[nmap <space><space>" ds"]])
+vim.cmd([[nmap <space><space>{ ds{]])
+vim.cmd([[nmap <space><space>( ds(]])
+vim.cmd([[nmap <space><space>' ds']])
+vim.cmd([[nmap <space><space>[ ds[]])
+
+-- Comments
+vim.cmd([[nmap <leader>/ gcc]])
+vim.cmd([[vmap <leader>/ gc]])
+-- vim.api.nvim_set_keymap("n", "<leader>/", "gcc", {noremap = true})

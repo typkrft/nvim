@@ -1,10 +1,10 @@
 vim.cmd([[
 call wilder#setup({
       \ 'modes': [':', '/', '?'],
-      \ 'next_key': '<Down>',
-      \ 'previous_key': '<Up>',
-      \ 'accept_key': '<Right>',
-      \ 'reject_key': '<Left>',
+      \ 'next_key': '<Tab>',
+      \ 'previous_key': '<S-Tab>',
+      \ 'accept_key': '<Down>',
+      \ 'reject_key': '<Up>',
       \ 'enable_cmdline_enter': 0,
       \ })
 
@@ -55,7 +55,7 @@ call wilder#set_option('renderer', wilder#popupmenu_renderer(wilder#popupmenu_bo
 ]])
 
 -- vim.api.nvim_set_keymap('c', '<Right>',  "<cmd>call wilder#reject_completion()<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap('c', '<CR>',  "<cmd>call wilder#accept_completion()<CR><CR>", { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap('c', '<CR>',  "<cmd>call wilder#accept_completion()<CR><CR>", { noremap = true, silent = true })
 
-vim.api.nvim_set_keymap('c', '<Tab>',  "<cmd>call v:lua.cmp.utils.keymap.set_map(18)<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap('c', '<S-Tab>',  "<cmd>call v:lua.cmp.utils.keymap.set_map(13)<CR>", { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap('c', '<Tab>',  "<cmd>call v:lua.cmp.utils.keymap.set_map(18)<CR>", { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap('c', '<S-Tab>',  "<cmd>call v:lua.cmp.utils.keymap.set_map(13)<CR>", { noremap = true, silent = true })

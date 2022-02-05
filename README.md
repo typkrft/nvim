@@ -18,7 +18,15 @@ There are some issues with cmp/wilder in the cmdline in a '/' search a letter ne
 - [ ] Chain together plugins that need eachother with packer
 - [ ] Theme everything Especially cokeline
 - [ ] move packer plugin compiled folder elsewhere
+- [ ] Revert Wilder tab mappings 
+- [ ] add comment mappigns
+- [ ] add kitty / nvim mac keys
 
 # Firefox
 - [ ] Change Container Tab Colors
+
+
+# Helpful Links
+[Denols Config](https://www.reddit.com/r/neovim/comments/qaseck/denols_linting_configuration_help/)
+
 

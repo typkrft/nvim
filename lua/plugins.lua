@@ -40,6 +40,13 @@ return require('packer').startup(function(use)
   -- https://github.com/folke/zen-mode.nvim
   use 'folke/zen-mode.nvim'
 
+  -- EasyMotion
+  -- https://github.com/easymotion/vim-easymotion
+  use 'easymotion/vim-easymotion'
+
+  -- Surround
+  -- https://github.com/tpope/vim-surround
+  use 'tpope/vim-surround'
 
   -- TODO Highlights
   -- https://github.com/folke/todo-comments.nvim
@@ -68,6 +75,11 @@ return require('packer').startup(function(use)
     end
   }
   vim.g.mapleader = ' '
+
+  -- Comments
+  -- https://github.com/numToStr/Comment.nvim
+  use 'numToStr/Comment.nvim'
+  require('Comment').setup()
 
   -- LSP Installer
   -- https://github.com/williamboman/nvim-lsp-installer
