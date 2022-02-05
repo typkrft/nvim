@@ -67,3 +67,48 @@ vim.cmd([[nmap <space><space>[ ds[]])
 vim.cmd([[nmap <leader>/ gcc]])
 vim.cmd([[vmap <leader>/ gc]])
 -- vim.api.nvim_set_keymap("n", "<leader>/", "gcc", {noremap = true})
+
+-- Kitty Keymaps
+-- cmd + / = Comment
+vim.cmd([[nmap ⻧ gcc]])
+vim.cmd([[imap ⻧ <esc>gcci]])
+vim.cmd([[vmap 펒 gc]])
+
+-- cmd + right = eol
+vim.api.nvim_set_keymap('n', '⻯', '$', opts)
+vim.api.nvim_set_keymap('v', '⻯', '$', opts)
+vim.api.nvim_set_keymap('i', '⻯', '<esc>$a', opts)
+vim.cmd([[cmap ⻯ <c-e>]])
+--
+-- cmd + left = bol
+vim.api.nvim_set_keymap('n', '펒2', '0', opts)
+vim.api.nvim_set_keymap('v', '펒2', '0', opts)
+vim.api.nvim_set_keymap('i', '펒2', '<esc>0i', opts)
+vim.cmd([[cmap 펒2 <c-b>]])
+
+-- cmd + up = Top of Buffer
+-- NOTE: Maybe add begginning of line 0
+vim.api.nvim_set_keymap('n', '펒3', 'gg', opts)
+vim.api.nvim_set_keymap('v', '펒3', 'gg', opts)
+vim.api.nvim_set_keymap('i', '펒3', '<esc>ggi', opts)
+
+-- cmd + down = Bottom of Buffer
+vim.api.nvim_set_keymap('n', '펒4', 'G', opts)
+vim.api.nvim_set_keymap('v', '펒4', 'G', opts)
+vim.api.nvim_set_keymap('i', '펒4', '<esc>Gi', opts)
+
+-- cmd + right = end of word
+vim.api.nvim_set_keymap('n', '펒13', 'e', opts)
+vim.api.nvim_set_keymap('v', '펒13', 'e', opts)
+vim.api.nvim_set_keymap('i', '펒13', '<esc>ea', opts)
+
+-- cmd + left = begginning of word
+vim.api.nvim_set_keymap('n', '펒6', 'b', opts)
+vim.api.nvim_set_keymap('v', '펒6', 'b', opts)
+vim.api.nvim_set_keymap('i', '펒6', '<esc>bi', opts)
+
+vim.api.nvim_set_keymap('n', '펒7', 'ggVG', opts)
+vim.api.nvim_set_keymap('n', '펒8', 'u', opts)
+vim.api.nvim_set_keymap('n', '펒9', '<c-r>', opts)
+vim.api.nvim_set_keymap('n', '펒10', 'd0', opts)
+vim.api.nvim_set_keymap('n', '펒11', 'dvb', opts)
