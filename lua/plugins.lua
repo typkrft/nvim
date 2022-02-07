@@ -27,7 +27,6 @@ return require('packer').startup(function(use)
   -- https://github.com/nvim-treesitter/nvim-treesitter
   use 'nvim-treesitter/nvim-treesitter'
 
-
   -- Indent Guides
   -- https://github.com/lukas-reineke/indent-blankline.nvim
   use "lukas-reineke/indent-blankline.nvim"
@@ -77,10 +76,25 @@ return require('packer').startup(function(use)
   -- https://github.com/easymotion/vim-easymotion
   use 'easymotion/vim-easymotion'
 
+  -- ToggleTerm
+  -- https://github.com/akinsho/toggleterm.nvim
+  use {"akinsho/toggleterm.nvim"}
+  require("toggleterm").setup{}
+
   -- NeoScroll
-  -- https://github.com/karb94/neoscroll.nvim 
+  -- https://github.com/karb94/neoscroll.nvim
   use 'karb94/neoscroll.nvim'
   require('neoscroll').setup()
+
+  -- Nvim Tree
+  -- https://github.com/kyazdani42/nvim-tree.lua
+  use {
+    'kyazdani42/nvim-tree.lua',
+    requires = {
+      'kyazdani42/nvim-web-devicons', -- optional, for file icon
+    },
+    config = function() require'nvim-tree'.setup {} end
+  }
 
   -- Surround
   -- https://github.com/tpope/vim-surround
@@ -113,6 +127,10 @@ return require('packer').startup(function(use)
     end
   }
   vim.g.mapleader = ' '
+
+  -- Focus
+  -- https://github.com/beauwilliams/focus.nvim
+  use { "beauwilliams/focus.nvim", config = function() require("focus").setup() end }
 
   -- Comments
   -- https://github.com/numToStr/Comment.nvim
@@ -154,6 +172,10 @@ return require('packer').startup(function(use)
   use 'gelguy/wilder.nvim'
   use 'nixprime/cpsm'
 
+  -- Symbols Outline
+  -- https://github.com/simrat39/symbols-outline.nvim
+  use 'simrat39/symbols-outline.nvim'
+
   -- Dashboard
   -- https://github.com/glepnir/dashboard-nvim
   use 'glepnir/dashboard-nvim'
@@ -179,30 +201,27 @@ return require('packer').startup(function(use)
 
   -- Trouble - Diagnostic Information
   -- https://github.com/folke/trouble.nvim
-  use 'folke/trouble.nvim'
-  vim.api.nvim_set_keymap("n", "<leader>xx", "<cmd>Trouble<cr>",
-    {silent = true, noremap = true}
-  )
-  vim.api.nvim_set_keymap("n", "<leader>xw", "<cmd>Trouble workspace_diagnostics<cr>",
-    {silent = true, noremap = true}
-  )
-  vim.api.nvim_set_keymap("n", "<leader>xd", "<cmd>Trouble document_diagnostics<cr>",
-    {silent = true, noremap = true}
-  )
-  vim.api.nvim_set_keymap("n", "<leader>xl", "<cmd>Trouble loclist<cr>",
-    {silent = true, noremap = true}
-  )
-  vim.api.nvim_set_keymap("n", "<leader>xq", "<cmd>Trouble quickfix<cr>",
-    {silent = true, noremap = true}
-  )
-  vim.api.nvim_set_keymap("n", "gR", "<cmd>Trouble lsp_references<cr>",
-    {silent = true, noremap = true}
-  )
+  -- use 'folke/trouble.nvim'
+  -- vim.api.nvim_set_keymap("n", "<leader>xx", "<cmd>Trouble<cr>",
+    -- {silent = true, noremap = true}
+  -- )
+  -- vim.api.nvim_set_keymap("n", "<leader>xw", "<cmd>Trouble workspace_diagnostics<cr>",
+  --   {silent = true, noremap = true}
+  -- )
+  -- vim.api.nvim_set_keymap("n", "<leader>xd", "<cmd>Trouble document_diagnostics<cr>",
+  --   {silent = true, noremap = true}
+  -- )
+  -- vim.api.nvim_set_keymap("n", "<leader>xl", "<cmd>Trouble loclist<cr>",
+  --   {silent = true, noremap = true}
+  -- )
+  -- vim.api.nvim_set_keymap("n", "<leader>xq", "<cmd>Trouble quickfix<cr>",
+  --   {silent = true, noremap = true}
+  -- )
+  -- vim.api.nvim_set_keymap("n", "gR", "<cmd>Trouble lsp_references<cr>",
+  --   {silent = true, noremap = true}
+  -- )
 
-  -- LSP Diagnostics - Gutter Informaiton
-  -- https://github.com/glepnir/lspsaga.nvim
-  --use 'glepnir/lspsaga.nvim'
-  --require('lspsaga').init_lsp_saga()
+
 
 local lsp_handlers = function()
    local function lspSymbol(name, icon)
@@ -245,6 +264,12 @@ local lsp_handlers = function()
 end
 
 lsp_handlers()
+
+  -- LSP Diagnostics - Gutter Informaiton
+  -- https://github.com/glepnir/lspsaga.nvim
+  use 'tami5/lspsaga.nvim'
+  require('lspsaga').init_lsp_saga()
+
   -- Windline
   -- https://github.com/windwp/windline.nvim
   -- TODO: Need To Do A lot of Setup
@@ -260,13 +285,79 @@ lsp_handlers()
   -- https://github.com/noib3/nvim-cokeline
   -- TODO: Probably needs a lot more configuring
   -- NOTE: Very Touchy
+
   use({
     'noib3/nvim-cokeline',
     requires = 'kyazdani42/nvim-web-devicons', -- If you want devicons
     config = function()
-      require('cokeline').setup({
-        show_if_buffers_are_at_least = 2,
-      })
+  local get_hex = require('cokeline/utils').get_hex
+  local yellow = vim.g.terminal_color_3
+require('cokeline').setup({
+          show_if_buffers_are_at_least = 2,
+  default_hl = {
+    focused = {
+      fg = get_hex('Normal', 'fg'),
+      bg = get_hex('ColorColumn', 'bg'),
+    },
+    unfocused = {
+      fg = get_hex('Comment', 'fg'),
+      bg = get_hex('ColorColumn', 'bg'),
+    },
+  },
+
+  rendering = {
+    left_sidebar = {
+      filetype = 'NvimTree',
+      components = {
+        {
+          text = '  NvimTree',
+          hl = {
+            fg = yellow,
+            bg = get_hex('NvimTreeNormal', 'bg'),
+            style = 'bold'
+          }
+        },
+      }
+    },
+  },
+
+  components = {
+    {
+      text = function(buffer) return (buffer.index ~= 1) and '▏' or '' end,
+    },
+    {
+      text = '  ',
+    },
+    {
+      text = function(buffer)
+        return buffer.devicon.icon
+      end,
+      hl = {
+        fg = function(buffer)
+          return buffer.devicon.color
+        end,
+      },
+    },
+    {
+      text = ' ',
+    },
+    {
+      text = function(buffer) return buffer.filename .. '  ' end,
+      hl = {
+        style = function(buffer)
+          return buffer.is_focused and 'bold' or nil
+        end,
+      }
+    },
+    {
+      text = '',
+      delete_buffer_on_left_click = true,
+    },
+    {
+      text = '  ',
+    },
+  },
+})
     end
   })
 
