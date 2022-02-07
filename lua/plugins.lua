@@ -33,7 +33,8 @@ return require('packer').startup(function(use)
   use "lukas-reineke/indent-blankline.nvim"
 
   vim.opt.list = true
-  -- vim.opt.listchars:append("space:⋅")
+  vim.opt.listchars:append("space: ")
+  vim.opt.listchars:append("trail: ")
   -- vim.opt.listchars:append("eol:↴")
 
   vim.cmd [[highlight IndentBlanklineIndent1 guifg=#E06C75 gui=nocombine]]
@@ -75,6 +76,11 @@ return require('packer').startup(function(use)
   -- EasyMotion
   -- https://github.com/easymotion/vim-easymotion
   use 'easymotion/vim-easymotion'
+
+  -- NeoScroll
+  -- https://github.com/karb94/neoscroll.nvim 
+  use 'karb94/neoscroll.nvim'
+  require('neoscroll').setup()
 
   -- Surround
   -- https://github.com/tpope/vim-surround
@@ -123,6 +129,11 @@ return require('packer').startup(function(use)
   use 'hrsh7th/cmp-nvim-lsp'
   use 'hrsh7th/cmp-buffer'
   use 'hrsh7th/cmp-path'
+
+  use 'f3fora/cmp-spell'
+  vim.opt.spell = true
+  vim.opt.spelllang = { 'en_us' }
+
   -- use 'hrsh7th/cmp-cmdline'
   use 'hrsh7th/nvim-cmp'
 
