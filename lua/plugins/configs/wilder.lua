@@ -40,7 +40,9 @@ call wilder#set_option('pipeline', [
 call wilder#set_option('renderer', wilder#popupmenu_renderer(wilder#popupmenu_border_theme({
       \ 'highlighter': wilder#basic_highlighter(),
       \ 'min_width': '100%',
-      \ 'min_height': '15%',
+      \ 'min_height': '10%',
+      \ 'pumblend': 10,
+      \ 'border': 'rounded',
       \ 'reverse': 0,
       \ 'highlights': {
       \   'accent': wilder#make_hl('WilderAccent', 'Pmenu', [{}, {}, {'foreground': '#50fa7b'}]),

@@ -1,5 +1,6 @@
 -- TODO: Move Configs to their own files
 -- TODO: Look into order of plugins
+-- TODO: Packer should be floating
 
 -- Bootstrap Packer
 -- run `nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'` to install
@@ -10,109 +11,182 @@ if fn.empty(fn.glob(install_path)) > 0 then
 end
 
 return require('packer').startup(function(use)
-
   -- Packer
   -- https://github.com/wbthomason/packer.nvim
   use 'wbthomason/packer.nvim'
 
+  -- NOTE: Theming
   -- Themer
   -- https://github.com/themercorp/themer.lua
   use 'themercorp/themer.lua'
-
-  -- Friendly Snippets
-  -- https://github.com/rafamadriz/friendly-snippets
-  use 'rafamadriz/friendly-snippets'
 
   -- Treesitter
   -- https://github.com/nvim-treesitter/nvim-treesitter
   use 'nvim-treesitter/nvim-treesitter'
 
+  -- TODO Highlights
+  -- https://github.com/folke/todo-comments.nvim
+  -- NOTE: Trailing Spaces in indent line config Breaks this
+  use {
+    "folke/todo-comments.nvim",
+    requires = "nvim-lua/plenary.nvim",
+    config = function()
+      require("todo-comments").setup({})
+    end
+  }
+
   -- Indent Guides
   -- https://github.com/lukas-reineke/indent-blankline.nvim
-  use "lukas-reineke/indent-blankline.nvim"
-
-  vim.opt.list = true
-  vim.opt.listchars:append("space: ")
-  vim.opt.listchars:append("trail: ")
-  -- vim.opt.listchars:append("eol:↴")
-
-  vim.cmd [[highlight IndentBlanklineIndent1 guifg=#E06C75 gui=nocombine]]
-  vim.cmd [[highlight IndentBlanklineIndent2 guifg=#E5C07B gui=nocombine]]
-  vim.cmd [[highlight IndentBlanklineIndent3 guifg=#98C379 gui=nocombine]]
-  vim.cmd [[highlight IndentBlanklineIndent4 guifg=#56B6C2 gui=nocombine]]
-  vim.cmd [[highlight IndentBlanklineIndent5 guifg=#61AFEF gui=nocombine]]
-  vim.cmd [[highlight IndentBlanklineIndent6 guifg=#C678DD gui=nocombine]]
-
-  require("indent_blankline").setup {
-    -- space_char_blankline = " ",
-    -- char_highlight_list = {
-    --   -- "IndentBlanklineIndent1",
-    --   "IndentBlanklineIndent2",
-    --   "IndentBlanklineIndent3",
-    --   "IndentBlanklineIndent4",
-    --   "IndentBlanklineIndent5",
-    --   "IndentBlanklineIndent6",
-    -- },
-    buftype_exclude = { "terminal" },
-    filetype_exclude = { "dashboard" },
-    show_current_context = true,
-    show_current_context_start = true,
+  use {
+    "lukas-reineke/indent-blankline.nvim",
   }
+
+  -- Colorizer
+  -- https://github.com/abosnjakovic/nvim-colorizer.lua
+  use {
+    'abosnjakovic/nvim-colorizer.lua',
+    -- Lazy load on :ColorizerToggle, filetypes
+    opt = true,
+    cmd = {'ColorizerToggle'},
+    ft = {"sh", "markdown", "json", "jsonc", "html", "javascript", "css"},
+    config = function()
+      require('colorizer').setup({
+        -- Enable all CSS functionality when ft is css, js, and HTML
+        css = { css = true; },
+        html = { css = true; },
+        js = { css = true; },
+        -- Enable 0xAARRGGBB colors in shell files
+        sh = { rgb_0x = true; },
+        zsh = { rgb_0x = true; }
+      })
+    end
+  }
+
+  -- Rainbow Parentheses
+  -- https://github.com/luochen1990/rainbow
+  use 'luochen1990/rainbow'
+
+  -- Twilight - Dims Code outside Block
+  -- https://github.com/folke/twilight.nvim
+  use {
+    'folke/twilight.nvim',
+    opt = true,
+    cmd = {"Twilight", "ZenMode"}
+  }
+
+  -- Zen mode
+  -- https://github.com/folke/zen-mode.nvim
+  use {
+    'folke/zen-mode.nvim',
+    opt = true,
+    cmd = {"ZenMode"}
+  }
+
+
+  -- NOTE: Interface
+  -- TODO: Config
+  -- Dashboard
+  -- https://github.com/glepnir/dashboard-nvim
+  use 'glepnir/dashboard-nvim'
+  vim.g.dashboard_default_executive = 'telescope'
+
+  -- Telescope
+  -- TODO: Config
+  use {
+    'nvim-telescope/telescope.nvim',
+    requires = { {'nvim-lua/plenary.nvim'} }
+  }
+
+  -- Wilder Menu
+  -- https://github.com/gelguy/wilder.nvim
+  use {
+    'gelguy/wilder.nvim',
+    requires = {
+      "nixprime/cpsm"
+    }
+  }
+
+  -- NeoScroll
+  -- https://github.com/karb94/neoscroll.nvim
+  use {
+    'karb94/neoscroll.nvim',
+    opt = true,
+    config = function()
+      require('neoscroll').setup()
+    end
+  }
+
+  -- Nvim Tree
+  -- TODO: Lots of Keybindings -> WhichKey
+  -- TODO: Remove Git Signs from buffer
+  -- TODO: Remove NVIMTREE title at the top
+  -- https://github.com/kyazdani42/nvim-tree.lua
+  -- NOTE: Should probably lazy load it on toggle cmd
+  use {
+    'kyazdani42/nvim-tree.lua',
+    requires = {
+      'kyazdani42/nvim-web-devicons',
+    },
+    opt = true,
+    cmd = {"NvimTreeToggle", "NvimTreeFocus", "NvimTreeOpen"},
+    config = function()
+      require('plugins/configs/tree')
+    end
+  }
+
+  -- Focus
+  -- https://github.com/beauwilliams/focus.nvim
+  use {
+    "beauwilliams/focus.nvim",
+    opt = true,
+    cmd = {"FocusSplitDown", "FocusSplitRight", "FocusEnable"},
+    config = function()
+      require("focus").setup({
+        excluded_filetypes = {
+          "toggleterm",
+          "dashbaord",
+          "packer",
+          "NvimTree"
+        },
+        excluded_buftypes = {"help", "terminal"},
+        number = false,
+        hybridnumber = true,
+        absolutenumber_unfocussed = true
+      })
+    end
+  }
+
+  -- TODO: below
+  -- NOTE: Editing
+  -- Vim Move
+  -- https://github.com/matze/vim-move
+  use 'matze/vim-move'
+
+  -- EasyMotion
+  -- https://github.com/easymotion/vim-easymotion
+  use 'easymotion/vim-easymotion'
 
   -- Git Signs
   -- https://github.com/lewis6991/gitsigns.nvim
   use 'lewis6991/gitsigns.nvim'
   use 'nvim-lua/plenary.nvim'
 
-  -- Twilight - Dims Code outside Block
-  -- https://github.com/folke/twilight.nvim
-  use 'folke/twilight.nvim'
-
-  -- Zen mode
-  -- https://github.com/folke/zen-mode.nvim
-  use 'folke/zen-mode.nvim'
-
-  -- EasyMotion
-  -- https://github.com/easymotion/vim-easymotion
-  use 'easymotion/vim-easymotion'
-
   -- ToggleTerm
   -- https://github.com/akinsho/toggleterm.nvim
   use {"akinsho/toggleterm.nvim"}
   require("toggleterm").setup{}
 
-  -- NeoScroll
-  -- https://github.com/karb94/neoscroll.nvim
-  use 'karb94/neoscroll.nvim'
-  require('neoscroll').setup()
-
-  -- Nvim Tree
-  -- https://github.com/kyazdani42/nvim-tree.lua
-  use {
-    'kyazdani42/nvim-tree.lua',
-    requires = {
-      'kyazdani42/nvim-web-devicons', -- optional, for file icon
-    },
-    config = function() require'nvim-tree'.setup {} end
-  }
-
   -- Surround
   -- https://github.com/tpope/vim-surround
   use 'tpope/vim-surround'
 
-  -- TODO Highlights
-  -- https://github.com/folke/todo-comments.nvim
-  use {
-  "folke/todo-comments.nvim",
-  requires = "nvim-lua/plenary.nvim",
+
+  use {'nvim-orgmode/orgmode',
+    ft = {'org'},
     config = function()
-      require("todo-comments").setup {
-        -- your configuration comes here
-        -- or leave it empty to use the default settings
-        -- refer to the configuration section below
-      }
+            require('orgmode').setup{}
     end
-  }
+    }
 
   -- Which Key
   -- https://github.com/folke/which-key.nvim
@@ -127,10 +201,6 @@ return require('packer').startup(function(use)
     end
   }
   vim.g.mapleader = ' '
-
-  -- Focus
-  -- https://github.com/beauwilliams/focus.nvim
-  use { "beauwilliams/focus.nvim", config = function() require("focus").setup() end }
 
   -- Comments
   -- https://github.com/numToStr/Comment.nvim
@@ -159,33 +229,20 @@ return require('packer').startup(function(use)
   use 'saadparwaiz1/cmp_luasnip'
   use 'L3MON4D3/LuaSnip'
 
+  -- Friendly Snippets
+  -- https://github.com/rafamadriz/friendly-snippets
+  use 'rafamadriz/friendly-snippets'
+
   -- Autopairs
   -- https://github.com/windwp/nvim-autopairs
   use 'windwp/nvim-autopairs'
   use 'windwp/nvim-ts-autotag'
 
-  -- Rainbow Parentheses
-  -- https://github.com/luochen1990/rainbow
-  use 'luochen1990/rainbow'
-
-  -- Wilder Menu
-  use 'gelguy/wilder.nvim'
-  use 'nixprime/cpsm'
 
   -- Symbols Outline
   -- https://github.com/simrat39/symbols-outline.nvim
   use 'simrat39/symbols-outline.nvim'
 
-  -- Dashboard
-  -- https://github.com/glepnir/dashboard-nvim
-  use 'glepnir/dashboard-nvim'
-  vim.g.dashboard_default_executive = 'telescope'
-
-  -- Telescope
-  use {
-    'nvim-telescope/telescope.nvim',
-    requires = { {'nvim-lua/plenary.nvim'} }
-  }
 
   -- Devicons
   -- https://github.com/kyazdani42/nvim-web-devicons
