@@ -18,13 +18,23 @@ return require('packer').startup(function(use)
   -- NOTE: Theming
   -- Themer
   -- https://github.com/themercorp/themer.lua
-  use 'themercorp/themer.lua'
+  use {
+    'themercorp/themer.lua',
+    config = function ()
+      require('plugins/configs/themer')
+    end
+  }
 
   -- Treesitter
   -- https://github.com/nvim-treesitter/nvim-treesitter
-  use 'nvim-treesitter/nvim-treesitter'
+  use {
+    'nvim-treesitter/nvim-treesitter',
+    config = function ()
+      require('plugins/configs/treesitter')
+    end
+  }
 
-  -- TODO Highlights
+  -- TODO: Highlights
   -- https://github.com/folke/todo-comments.nvim
   -- NOTE: Trailing Spaces in indent line config Breaks this
   use {
@@ -39,6 +49,9 @@ return require('packer').startup(function(use)
   -- https://github.com/lukas-reineke/indent-blankline.nvim
   use {
     "lukas-reineke/indent-blankline.nvim",
+    config = function ()
+      require('plugins/configs/indent')
+    end
   }
 
   -- Colorizer
@@ -64,7 +77,12 @@ return require('packer').startup(function(use)
 
   -- Rainbow Parentheses
   -- https://github.com/luochen1990/rainbow
-  use 'luochen1990/rainbow'
+  use {
+    'luochen1990/rainbow',
+    config = function ()
+      require('plugins/configs/rainbow')
+    end
+  }
 
   -- Twilight - Dims Code outside Block
   -- https://github.com/folke/twilight.nvim
@@ -82,28 +100,46 @@ return require('packer').startup(function(use)
     cmd = {"ZenMode"}
   }
 
-
   -- NOTE: Interface
-  -- TODO: Config
-  -- Dashboard
-  -- https://github.com/glepnir/dashboard-nvim
-  use 'glepnir/dashboard-nvim'
-  vim.g.dashboard_default_executive = 'telescope'
-
   -- Telescope
-  -- TODO: Config
+  -- https://github.com/nvim-telescope/telescope.nvim
   use {
     'nvim-telescope/telescope.nvim',
-    requires = { {'nvim-lua/plenary.nvim'} }
+    requires = { {'nvim-lua/plenary.nvim'} },
+    config = function ()
+      require('plugins/configs/telescope')
+    end
+  }
+
+  -- Dashboard
+  -- https://github.com/glepnir/dashboard-nvim
+  use {
+    'glepnir/dashboard-nvim',
+    setup = function ()
+      vim.g.dashboard_default_executive = 'telescope'
+    end,
+    config = function()
+      require('plugins/configs/dashboard')
+    end,
+    after = "telescope.nvim"
   }
 
   -- Wilder Menu
   -- https://github.com/gelguy/wilder.nvim
+  -- TODO: Right Selects
   use {
     'gelguy/wilder.nvim',
     requires = {
       "nixprime/cpsm"
-    }
+    },
+    keys = {
+      ":",
+      "/",
+      "?"
+    },
+    config = function ()
+      require('plugins/configs/wilder')
+    end
   }
 
   -- NeoScroll
@@ -111,6 +147,10 @@ return require('packer').startup(function(use)
   use {
     'karb94/neoscroll.nvim',
     opt = true,
+    keys = {
+      "<c-u>",
+      "<c-d>",
+    },
     config = function()
       require('neoscroll').setup()
     end
@@ -120,6 +160,7 @@ return require('packer').startup(function(use)
   -- TODO: Lots of Keybindings -> WhichKey
   -- TODO: Remove Git Signs from buffer
   -- TODO: Remove NVIMTREE title at the top
+  -- TODO: Set Keybinding to NVTREEOPEN then in config rebind it to toggle
   -- https://github.com/kyazdani42/nvim-tree.lua
   -- NOTE: Should probably lazy load it on toggle cmd
   use {
@@ -128,7 +169,7 @@ return require('packer').startup(function(use)
       'kyazdani42/nvim-web-devicons',
     },
     opt = true,
-    cmd = {"NvimTreeToggle", "NvimTreeFocus", "NvimTreeOpen"},
+    cmd = {"NvimTreeOpen"},
     config = function()
       require('plugins/configs/tree')
     end
@@ -159,8 +200,31 @@ return require('packer').startup(function(use)
   -- TODO: below
   -- NOTE: Editing
   -- Vim Move
-  -- https://github.com/matze/vim-move
-  use 'matze/vim-move'
+  -- https://github.com/fedepujol/move.nvim
+  use {
+    'fedepujol/move.nvim',
+    config = function ()
+      vim.api.nvim_set_keymap('n', '<M-Down>', ":MoveLine(1)<CR>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap('n', '<M-Up>', ":MoveLine(-1)<CR>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap('v', '<M-Down>', ":MoveBlock(1)<CR>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap('v', '<M-Up>', ":MoveBlock(-1)<CR>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap('n', '<M-Right>', ":MoveHChar(1)<CR>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap('n', '<M-Left>', ":MoveHChar(-1)<CR>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap('v', '<M-Right>', ":MoveHBlock(1)<CR>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap('v', '<M-Left>', ":MoveHBlock(-1)<CR>", { noremap = true, silent = true })
+    end,
+    opt = true,
+    keys = {
+      {'v','<M-Down>'},
+      {'v', '<M-Up>'},
+      {'v', '<M-Left>'},
+      {'v', '<M-Right>'},
+      {'n', '<M-Down>'},
+      {'n', '<M-Up>'},
+      {'n', '<M-Left>'},
+      -- {'n', '<M-Right>'},
+    }
+  }
 
   -- EasyMotion
   -- https://github.com/easymotion/vim-easymotion
@@ -184,9 +248,9 @@ return require('packer').startup(function(use)
   use {'nvim-orgmode/orgmode',
     ft = {'org'},
     config = function()
-            require('orgmode').setup{}
+      require('orgmode').setup{}
     end
-    }
+  }
 
   -- Which Key
   -- https://github.com/folke/which-key.nvim
@@ -200,7 +264,6 @@ return require('packer').startup(function(use)
       }
     end
   }
-  vim.g.mapleader = ' '
 
   -- Comments
   -- https://github.com/numToStr/Comment.nvim
