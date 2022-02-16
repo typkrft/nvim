@@ -1,6 +1,7 @@
 -- TODO: Move Configs to their own files
 -- TODO: Look into order of plugins
 -- TODO: Packer should be floating
+-- TODO: Setup Requires and dependancies for everything
 
 -- Bootstrap Packer
 -- run `nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'` to install
@@ -197,7 +198,6 @@ return require('packer').startup(function(use)
     end
   }
 
-  -- TODO: below
   -- NOTE: Editing
   -- Vim Move
   -- https://github.com/fedepujol/move.nvim
@@ -215,56 +215,103 @@ return require('packer').startup(function(use)
     end,
     opt = true,
     keys = {
-      {'v','<M-Down>'},
-      {'v', '<M-Up>'},
-      {'v', '<M-Left>'},
-      {'v', '<M-Right>'},
-      {'n', '<M-Down>'},
-      {'n', '<M-Up>'},
+      {'v','<M-Down>'}, {'v', '<M-Up>'}, {'v', '<M-Left>'},
+      {'v', '<M-Right>'}, {'n', '<M-Down>'}, {'n', '<M-Up>'},
       {'n', '<M-Left>'},
       -- {'n', '<M-Right>'},
     }
   }
 
-  -- EasyMotion
-  -- https://github.com/easymotion/vim-easymotion
-  use 'easymotion/vim-easymotion'
+  -- Hop
+  -- NOTE: Lots of keybinds and strats probably needs a whole which key page
+  -- https://github.com/phaazon/hop.nvim
+  use {
+    'phaazon/hop.nvim',
+    config = function ()
+      vim.api.nvim_set_keymap('n', 'f', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = false })<cr>", {})
+      vim.api.nvim_set_keymap('n', 'F', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = false })<cr>", {})
+      vim.api.nvim_set_keymap('o', 'f', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = false, inclusive_jump = true })<cr>", {})
+      vim.api.nvim_set_keymap('o', 'F', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = false, inclusive_jump = true })<cr>", {})
+      vim.api.nvim_set_keymap('', 't', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = false })<cr>", {})
+      vim.api.nvim_set_keymap('', 'T', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = false })<cr>", {})
+      require('hop').setup({})
+    end
+  }
 
   -- Git Signs
   -- https://github.com/lewis6991/gitsigns.nvim
-  use 'lewis6991/gitsigns.nvim'
-  use 'nvim-lua/plenary.nvim'
+  use {
+    'lewis6991/gitsigns.nvim',
+    requires = {
+      'nvim-lua/plenary.nvim'
+    },
+    config = function()
+      require('gitsigns').setup({})
+    end
+  }
 
   -- ToggleTerm
+  -- TODO: Keymaps for various term types and commands like lazy git
   -- https://github.com/akinsho/toggleterm.nvim
-  use {"akinsho/toggleterm.nvim"}
-  require("toggleterm").setup{}
+  use {
+    "akinsho/toggleterm.nvim",
+    config = function ()
+      require('toggleterm').setup({})
+    end
+
+  }
 
   -- Surround
+  -- TODO: Maybe create a function that gets the character under the cursor then replaces it with a different character. eg: hovered on " then <leader>bc' changes it to '
   -- https://github.com/tpope/vim-surround
   use 'tpope/vim-surround'
 
 
-  use {'nvim-orgmode/orgmode',
-    ft = {'org'},
-    config = function()
-      require('orgmode').setup{}
-    end
-  }
+  -- NOTE: Currently Disabled becuase of breaking changes
+  -- Org Mode
+  -- https://github.com/nvim-orgmode/orgmode
+  -- use {'nvim-orgmode/orgmode',
+  --   ft = {'org'},
+  --   config = function()
+  --     require('orgmode').setup({
+  --       -- require('orgmode').setup_ts_grammar()
+  --     })
+  --   end
+  -- }
 
-  -- Which Key
-  -- https://github.com/folke/which-key.nvim
+  -- Neo Org Mode
+  -- https://github.com/nvim-neorg/neorg#-showcase
+  -- NOTE: Lots of config to do. This is incredible
+  -- TODO: Comback to this
   use {
-    "folke/which-key.nvim",
+    "nvim-neorg/neorg",
+    -- tag = "latest",
+    ft = "norg",
+    after = "nvim-treesitter", -- You may want to specify Telescope here as well
     config = function()
-      require("which-key").setup {
-        -- your configuration comes here
-        -- or leave it empty to use the default settings
-        -- refer to the configuration section below
-      }
+        require('neorg').setup({
+          load = {
+            ["core.defaults"] = {},
+            ["core.norg.dirman"] = {
+              config = {
+                workspaces = {
+                  example_gtd = "/Users/brandon/Code/Git/example_gtd",
+                },
+              },
+            },
+            ["core.norg.concealer"] = {},
+            ["core.norg.completion"] = {},
+            ["core.gtd.base"] = {
+              config = {
+                workspace = "example_gtd",
+              }
+            },
+          }
+      })
     end
   }
 
+  -- TODO: Below
   -- Comments
   -- https://github.com/numToStr/Comment.nvim
   use 'numToStr/Comment.nvim'
@@ -301,11 +348,9 @@ return require('packer').startup(function(use)
   use 'windwp/nvim-autopairs'
   use 'windwp/nvim-ts-autotag'
 
-
   -- Symbols Outline
   -- https://github.com/simrat39/symbols-outline.nvim
   use 'simrat39/symbols-outline.nvim'
-
 
   -- Devicons
   -- https://github.com/kyazdani42/nvim-web-devicons
@@ -340,8 +385,6 @@ return require('packer').startup(function(use)
   -- vim.api.nvim_set_keymap("n", "gR", "<cmd>Trouble lsp_references<cr>",
   --   {silent = true, noremap = true}
   -- )
-
-
 
 local lsp_handlers = function()
    local function lspSymbol(name, icon)
@@ -480,6 +523,19 @@ require('cokeline').setup({
 })
     end
   })
+
+  -- Which Key
+  -- https://github.com/folke/which-key.nvim
+  use {
+    "folke/which-key.nvim",
+    config = function()
+      require("which-key").setup {
+        -- your configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+      }
+    end
+  }
 
   -- Automatically setup configuration
   if packer_bootstrap then
