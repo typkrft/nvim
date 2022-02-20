@@ -45,9 +45,14 @@ cmp.event:on( 'confirm_done', cmp_autopairs.on_confirm_done({  map_char = { tex 
 cmp_autopairs.lisp[#cmp_autopairs.lisp+1] = "racket"
 
 cmp.setup({
-  documentation = {
-      border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
-    },
+  window = {
+    completion = {
+        border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+      },
+    documentation = {
+        border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+      },
+  },
   snippet = {
     -- REQUIRED - you must specify a snippet engine
     expand = function(args)

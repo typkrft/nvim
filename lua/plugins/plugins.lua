@@ -258,26 +258,12 @@ return require('packer').startup(function(use)
     config = function ()
       require('toggleterm').setup({})
     end
-
   }
 
   -- Surround
   -- TODO: Maybe create a function that gets the character under the cursor then replaces it with a different character. eg: hovered on " then <leader>bc' changes it to '
   -- https://github.com/tpope/vim-surround
   use 'tpope/vim-surround'
-
-
-  -- NOTE: Currently Disabled becuase of breaking changes
-  -- Org Mode
-  -- https://github.com/nvim-orgmode/orgmode
-  -- use {'nvim-orgmode/orgmode',
-  --   ft = {'org'},
-  --   config = function()
-  --     require('orgmode').setup({
-  --       -- require('orgmode').setup_ts_grammar()
-  --     })
-  --   end
-  -- }
 
   -- Neo Org Mode
   -- https://github.com/nvim-neorg/neorg#-showcase
@@ -302,7 +288,7 @@ return require('packer').startup(function(use)
             ["core.norg.concealer"] = {},
             ["core.norg.completion"] = {},
             ["core.gtd.base"] = {
-              config = {
+            config = {
                 workspace = "example_gtd",
               }
             },
@@ -310,6 +296,26 @@ return require('packer').startup(function(use)
       })
     end
   }
+
+  -- REPL
+  -- NOTE: Not currently macOS compatible
+  -- https://github.com/dccsillag/magma-nvim
+  -- use {
+  --   'dccsillag/magma-nvim',
+  --   run = ':UpdateRemotePlugins',
+  --   config = function ()
+  --     vim.cmd[[
+  --       nnoremap <silent><expr> <LocalLeader>r  :MagmaEvaluateOperator<CR>
+  --       nnoremap <silent>       <LocalLeader>rr :MagmaEvaluateLine<CR>
+  --       xnoremap <silent>       <LocalLeader>r  :<C-u>MagmaEvaluateVisual<CR>
+  --       nnoremap <silent>       <LocalLeader>rc :MagmaReevaluateCell<CR>
+  --       nnoremap <silent>       <LocalLeader>rd :MagmaDelete<CR>
+  --       nnoremap <silent>       <LocalLeader>ro :MagmaShowOutput<CR>
+  --
+  --       let g:magma_automatically_open_output = v:false
+  --     ]]
+  --   end
+  -- }
 
   -- TODO: Below
   -- Comments
@@ -333,7 +339,10 @@ return require('packer').startup(function(use)
   vim.opt.spelllang = { 'en_us' }
 
   -- use 'hrsh7th/cmp-cmdline'
-  use 'hrsh7th/nvim-cmp'
+  use {
+    'hrsh7th/nvim-cmp',
+    branch = 'dev' -- remove dev when complettion borders are pushed to main (Known Good Commit 41af9aa)
+  }
 
   -- Snippets
   use 'saadparwaiz1/cmp_luasnip'
@@ -453,76 +462,63 @@ lsp_handlers()
     'noib3/nvim-cokeline',
     requires = 'kyazdani42/nvim-web-devicons', -- If you want devicons
     config = function()
-  local get_hex = require('cokeline/utils').get_hex
-  local yellow = vim.g.terminal_color_3
-require('cokeline').setup({
-          show_if_buffers_are_at_least = 2,
-  default_hl = {
-    focused = {
-      fg = get_hex('Normal', 'fg'),
-      bg = get_hex('ColorColumn', 'bg'),
-    },
-    unfocused = {
-      fg = get_hex('Comment', 'fg'),
-      bg = get_hex('ColorColumn', 'bg'),
-    },
-  },
-
-  rendering = {
-    left_sidebar = {
-      filetype = 'NvimTree',
+      local get_hex = require('cokeline/utils').get_hex
+      local yellow = vim.g.terminal_color_3
+      require('cokeline').setup({
+        show_if_buffers_are_at_least = 2,
+        default_hl = {
+          focused = {
+            fg = get_hex('Normal', 'fg'),
+            bg = get_hex('ColorColumn', 'bg'),
+          },
+          unfocused = {
+            fg = get_hex('Comment', 'fg'),
+            bg = get_hex('ColorColumn', 'bg'),
+          },
+        },
+        rendering = {
+          left_sidebar = {
+            filetype = 'NvimTree',
+            components = {
+              {
+                text = '  NvimTree',
+                hl = {
+                  fg = yellow,
+                  bg = get_hex('NvimTreeNormal', 'bg'),
+                  style = 'bold'
+                }
+              },
+            }
+          },
+        },
       components = {
+        { text = function(buffer) return (buffer.index ~= 1) and '▏' or '' end, },
+        { text = '  ', },
         {
-          text = '  NvimTree',
+          text = function(buffer)
+            return buffer.devicon.icon
+          end,
           hl = {
-            fg = yellow,
-            bg = get_hex('NvimTreeNormal', 'bg'),
-            style = 'bold'
+            fg = function(buffer)
+              return buffer.devicon.color
+            end,
+          },
+        },
+        { text = ' ', },
+        {
+          text = function(buffer) return buffer.filename .. '  ' end,
+          hl = {
+            style = function(buffer)
+              return buffer.is_focused and 'bold' or nil
+            end,
           }
         },
-      }
-    },
-  },
-
-  components = {
-    {
-      text = function(buffer) return (buffer.index ~= 1) and '▏' or '' end,
-    },
-    {
-      text = '  ',
-    },
-    {
-      text = function(buffer)
-        return buffer.devicon.icon
-      end,
-      hl = {
-        fg = function(buffer)
-          return buffer.devicon.color
-        end,
+        { text = '', delete_buffer_on_left_click = true, },
+        { text = '  ', },
       },
-    },
-    {
-      text = ' ',
-    },
-    {
-      text = function(buffer) return buffer.filename .. '  ' end,
-      hl = {
-        style = function(buffer)
-          return buffer.is_focused and 'bold' or nil
-        end,
-      }
-    },
-    {
-      text = '',
-      delete_buffer_on_left_click = true,
-    },
-    {
-      text = '  ',
-    },
-  },
+    })
+  end
 })
-    end
-  })
 
   -- Which Key
   -- https://github.com/folke/which-key.nvim
