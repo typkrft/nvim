@@ -10,12 +10,16 @@ vim.opt.foldenable = false
 -- vim.opt.colorcolumn = '80'
 -- vim.opt.columns = 83
 
+-- Spelling
+vim.opt.spell = true
+
+
 -- Wrapping
 -- TODO: Werid Dark Line Before Break Char
 vim.opt.breakindent = true
 vim.opt.breakindentopt = 'shift:2,min:40,sbr'
 vim.opt.linebreak = true
-vim.opt.showbreak = '  ⮑  '
+vim.opt.showbreak = '      ⮑  '
 -- Move left/right to next/prev line
 vim.opt.whichwrap = vim.opt.whichwrap + '<,>,[,]'
 

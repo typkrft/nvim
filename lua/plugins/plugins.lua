@@ -267,8 +267,7 @@ return require('packer').startup(function(use)
 
   -- Neo Org Mode
   -- https://github.com/nvim-neorg/neorg#-showcase
-  -- NOTE: Lots of config to do. This is incredible
-  -- TODO: Comback to this
+  -- TODO: Lots of config to do. This is incredible
   use {
     "nvim-neorg/neorg",
     -- tag = "latest",
@@ -335,7 +334,6 @@ return require('packer').startup(function(use)
   use 'hrsh7th/cmp-path'
 
   use 'f3fora/cmp-spell'
-  vim.opt.spell = true
   vim.opt.spelllang = { 'en_us' }
 
   -- use 'hrsh7th/cmp-cmdline'
@@ -413,7 +411,7 @@ local lsp_handlers = function()
       signs = true,
       underline = true,
       update_in_insert = false,
-   }
+  }
 
    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
       border = "single",
